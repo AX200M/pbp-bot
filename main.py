@@ -19,7 +19,7 @@ async def on_message(message):  # Runs the code whenever a message is sent in th
     for guild in bot.guilds:
         # Get the role objects for the roles on the current guild
         juniorDevs = discord.utils.get(guild.roles, name='Junior Developers')
-        seniorDevs = discord.utils.get(guild.roles, name='Senior Developers)
+        seniorDevs = discord.utils.get(guild.roles, name='Senior Developers')
         leadDevs = discord.utils.get(guild.roles, name='Lead Developers')
 
         if args[0] == bot.Prefix + 'taskdone':
@@ -73,7 +73,7 @@ async def on_message(message):  # Runs the code whenever a message is sent in th
                     message_text += f"<@{user_id}>**: {value}**\n"
 
                 # Create the embed
-                task_embed = discord.Embed(title=Tasks Completed This Week'', description=message_text, color=0x2f3136)
+                task_embed = discord.Embed(title='Tasks Completed This Week', description=message_text, color=0x2f3136)
 
                 # Send the embed
                 await message.channel.send(content=None, embed=task_embed)
