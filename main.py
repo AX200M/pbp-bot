@@ -6,7 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 # ---------- USER CONFIGURABLE SECTION -----------------
-token = 'MTA2MDcyNTkyOTc3NDY5MDM0NA.GlPrhk.6rsclE5awWnS74kaBA5WFscmRbrsKNJH3CZ8Xs'  # Stores the bot's token. Used to pass the bot's token into bot.run in order to run the bot.
+token = 'MTA2MDcyNTkyOTc3NDY5MDM0NA.GfgKSs.6FHcdaxLFoD4hgkIwhPMVn0DmmjkI6YVDDn7CI'  # Stores the bot's token. Used to pass the bot's token into bot.run in order to run the bot.
 bot = commands.Bot(command_prefix='', intents=discord.Intents.all())  # Changing the bot's intents will break functionality! Only touch this if you know what you're doing!
 bot.Prefix = '!'  # Defines the bot's command prefix.
 # ---------- END OF USER CONFIGURABLE SECTION ----------
@@ -21,10 +21,11 @@ async def on_message(message):  # Runs the code whenever a message is sent in th
         juniorDevs = discord.utils.get(guild.roles, name='Junior Developers')
         seniorDevs = discord.utils.get(guild.roles, name='Senior Developers')
         leadDevs = discord.utils.get(guild.roles, name='Lead Developers')
+        projectManagers = discord.utils.get(guild.roles, name="Project Managers")
 
         if args[0] == bot.Prefix + 'taskdone':
             # Check if the message author has one of the roles
-            if juniorDevs in message.author.roles or seniorDevs in message.author.roles or leadDevs in message.author.roles:
+            if juniorDevs in message.author.roles or seniorDevs in message.author.roles or leadDevs in message.author.roles or projectManagers in message.author.roles:
                 # The message author has one of the roles
                 # Perform the code actions
 
@@ -51,21 +52,25 @@ async def on_message(message):  # Runs the code whenever a message is sent in th
                         json.dump(data, f, indent=2)
 
                 await message.channel.send('**Task amount updated!** :white_check_mark:')
-            elif juniorDevs not in message.author.roles or seniorDevs not in message.author.roles or leadDevs not in message.author.roles:
+            elif juniorDevs not in message.author.roles or seniorDevs not in message.author.roles or leadDevs not in message.author.roles or projectManagers not in message.author.roles:
                 # The message author does not have one of the roles
                 # Don't perform the code actions
                 await message.channel.send('**You do not have permission to run this command!** :x:')
 
     if args[0] == bot.Prefix + 'viewtasks':
+        # Get the role object for the role on the current guild
+        juniorDevs = discord.utils.get(guild.roles, name='Junior Developers')
+        seniorDevs = discord.utils.get(guild.roles, name='Senior Developers')
+        leadDevs = discord.utils.get(guild.roles, name='Lead Developers')
+        projectManagers = discord.utils.get(guild.roles, name='Project Managers')
+
         for guild in bot.guilds:
             # Open the database file in read mode
             with open('database.json', 'r') as database:
                 # Load the contents of the file into a dictionary
                 data = json.load(database)
 
-            # Get the role object for the role on the current guild
-            projectManagers = discord.utils.get(guild.roles, name='Project Managers')
-            if projectManagers in message.author.roles:
+            if juniorDevs in message.author.roles or seniorDevs in message.author.roles or leadDevs in message.author.roles or projectManagers in message.author.roles:
                 # Initialize the message
                 message_text = ""
                 # Build the message using string formatting
@@ -73,12 +78,12 @@ async def on_message(message):  # Runs the code whenever a message is sent in th
                     message_text += f"<@{user_id}>**: {value}**\n"
 
                 # Create the embed
-                task_embed = discord.Embed(title='Tasks Completed This Week', description=message_text, color=0x2f3136)
+                task_embed = discord.Embed(title=Tasks Completed This Week'', description=message_text, color=0x2f3136)
 
                 # Send the embed
                 await message.channel.send(content=None, embed=task_embed)
 
-            elif projectManagers not in message.author.roles:
+            elif juniorDevs not in message.author.roles or seniorDevs not in message.author.roles or leadDevs not in message.author.roles or projectManagers not in message.author.roles:
                 # The message author does not have one of the roles
                 # Don't perform the code actions
                 await message.channel.send('**You do not have permission to run this command!** :x:')
